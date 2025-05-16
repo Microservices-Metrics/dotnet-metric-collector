@@ -1,3 +1,4 @@
+using LibGit2Sharp;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MetricCollector.Controllers;
@@ -14,12 +15,14 @@ public class CollectorController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Collect()
+    public async Task<IActionResult> Collect([FromBody] string repoUrl)
     {
-        // if (metric == null)
-        // {
-        //     return BadRequest("Metric cannot be null");
-        // }
+        if (Directory.Exists(localPath))
+        {
+            Directory.Delete(localPath, true);
+        }
+
+        Repository.Clone(repoUrl, localPath);
 
         try
         {
